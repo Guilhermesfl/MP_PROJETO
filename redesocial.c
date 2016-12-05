@@ -1,252 +1,123 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "grafo.h"
-#include <string.h>
+#include <stdioh.>
+#include <strdlib.h>
 
-grafo* cria_grafo(char* nome)
+int main(int argc, char const *argv[])
 {
-    grafo* G = (grafo*) malloc(sizeof(struct grafo));
-    strcpy(G->Nome,nome);
-    G->v = NULL;
-    return G;
-}
+	int opcao;
+	char *nome,*rede_social = "Facebook 2";
+	grafo *G;
+	G = cria_grafo(rede_social);
 
-char* retorna_nome_grafo(grafo *G)
-{
-	return G->Nome;
-}
 
-grafo* destroi_grafo(grafo *G)
-{
-	if(G != NULL){
-	G = LiberaVertices(G);
-	free(G);
-	return NULL;
-	}
+	do{
+		printf("Digite a opcao a ser acessada:");
+		printf("1 - Interface do USUARIO\n");
+		printf("2 - Interface do ADMINISTRADOR\n");
+		printf("3 - Leitor e Escritor da rede social\n");
+		printf("4 - Sair\n");
+		scanf("%d", &opcao)
 
-}
-grafo* LiberaVertices(grafo *G)
-{
-    struct vertice *aux, *aux1;
-    aux = G->v;
-    aux1 = aux;
-    while(aux != NULL){
-    	if(aux->list)aux->list = LiberaArestas(aux->list);
-    	aux = aux->prox;
-    	free(aux1);
-    	aux1 = aux;
-    }
-    return G;
-}
-Edge* LiberaArestas(Edge* l)
-{
-    Edge *aux;
-    aux=l;
-    while(l != NULL)
-    {
-        l = l->prox;
-        free(aux);      
-        aux = l;
-    }
-    return NULL;
-}
-grafo* adiciona_vertice(grafo *G,int x){
+		switch(opcao){
+			case 1:
+				/****************** INTERFACE USUÁRIO ******************/
+				do{
+					printf("*********MENU USUARIO*********\n");
+					printf("1 - Criar Pessoa\n");
+					printf("2 - Editar Pessoa\n");
+					printf("3 - Excluir Pessoa\n");
+					printf("4 - Trasacoes\n");
+					printf("5 - Sair\n");
+					scanf("%d", &opcao1);
+					switch(opcao1){
+						case 1:
+							//FALTA ADICIONAR INTERESSES, TRASACOES E AVALIACOES
+							G = adiciona_vertice(grafo *G);
+							break;
+						
+						case 2: 
+							printf("Digite o nome da pessoa a ser editada:");
+							scanf("%s", nome);
+							G = muda_valor_vertice(G,nome);
+							break;
+						
+						case 3:
+							printf("Digite o nome da pessoa a ser excluida:");
+							scanf("%s", nome);
+							G = remove_vertice(G,nome); 
+							break;
+						
+						case 4: 
+							break;
+						
+						default:
+							break;
+					}
+				}while(opcao1 != 5);
+				break;
+			
+			case 2:
+				/****************** INTERFACE ADMINISTRADOR *******************/
+				do{
+					printf("*********MENU ADMINISTRADOR*********\n");
+					printf("1 - Exibir informacoes dos usuarios\n");
+					printf("2 - Exibir Trasacoes realizadas\n");
+					printf("3 - Editar Trasacoes\n");
+					printf("4 - Sair\n");
+	
+					switch(opcao1){
+						case 1:
+							//FALTA ADICIONAR INTERESSES, TRASACOES E AVALIACOES
+							G = adiciona_vertice(grafo *G);
+							break;
+					
+						case 2: 
+							printf("Digite o nome da pessoa a ser editada:");
+							scanf("%s", nome);
+							G = muda_valor_vertice(G,nome);
+							break;
+						
+						case 3:
+							printf("Digite o nome da pessoa a ser excluida:");
+							scanf("%s", nome);
+							G = remove_vertice(G,nome); 
+							break;
+						
+						default:
+						break;
+					}
+				}while(opcao1 != 4);
 
-	if(G->v == NULL){
-    	G->v = (struct vertice*)malloc(sizeof(struct vertice));
-    	G->v->list = (Edge *)malloc(sizeof(Edge));
-    	G->v->identificador = x;
-    	G->v->valor_vertice = -1;
-    	G->v->list->prox = NULL;
-    	G->v->prox = NULL;
-    } else {
-    	struct vertice *aux = G->v;
-    	while(aux->prox != NULL)aux = aux->prox;
-    	aux->prox = (struct vertice*)malloc(sizeof(struct vertice));
-    	aux->prox->list = (Edge *)malloc(sizeof(Edge));
-    	aux->prox->identificador = x;
-    	aux->prox->valor_vertice = -1;
-    	aux->prox->list->prox = NULL;
-    	aux->prox->prox = NULL;
-    }
-    return G;
+				break;
 
-}
-grafo* muda_valor_vertice(grafo *G,int x,float v)
-{
-	struct vertice* aux;
-    aux = G->v;
-	while(aux->identificador != x && aux->prox != NULL) aux = aux->prox;
-    if(aux->identificador == x){
-        aux->valor_vertice = v;
-    }else{
-        printf("O vertice %d nao pertence ao grafo!", x);
-    }
-    return G;
-}
+			case 3:
+				/****************** LEITOR E ESCRITOR DA REDE SOCIAL *******************/
+				do{
+					printf("*********MENU LEITURA E ESCRITA*********\n");
+					printf("1 - Salvar dados da rede em um arquivo\n");
+					printf("2 - Recuperar rede social\n");
+					printf("3 - Sair\n");
+	
+					switch(opcao1){
+						case 1:
+							break;
+					
+						case 2: 
+							break;
+						
+						case 3:
 
-float retorna_valor_vertice(grafo *G,int x){
-    
-    float valor=-1;
-    struct vertice* aux;
-    aux = G->v;
+							break;
+						
+						default:
+						break;
+					}
+				}while(opcao1 != 3);
 
-	while(aux->identificador != x && aux->prox != NULL) aux = aux->prox;
-    if(aux->identificador == x){
-        valor = aux->valor_vertice;
-        return valor;
-    } else return -1;
-}
-grafo* remove_vertice(grafo *G,int x){
-    struct vertice *aux = G->v;
-    struct vertice *aux1 = G->v;
-
-    if(G->v){
-    	while((aux->identificador != x) && (aux->prox != NULL)){
-    		aux1 = aux;
-    		aux = aux->prox;
-    	}
-		if(aux->identificador == x){
-			aux->list = LiberaArestas(aux->list);
-			if(aux->prox == NULL) aux->identificador = -1;
-			else {
-			aux1->prox = aux->prox;
-			aux->list = LiberaArestas(aux->list);
-			} 
+				break;
+			default:
+				break;
 		}
-	}
-    return G;
-}
-grafo* adiciona_aresta(grafo *G,int x,int y)
-{
-	struct vertice *aux = G->v;
-    struct vertice *aux1 = G->v;
-    Edge *aux_aresta;
-    
-    while(aux->identificador != x && aux->prox != NULL) aux = aux->prox;
-    while(aux1->identificador != y && aux1->prox != NULL) aux1 = aux1->prox;
-    if((aux->identificador == x) && (aux1->identificador == y)){
-    	aux_aresta = aux->list;
-    	if(aux_aresta->prox == NULL){
-    		aux_aresta->vdestino = y;
-        	aux_aresta->valor_aresta = -1;
-        	aux_aresta->prox = (Edge*)malloc(sizeof(Edge));
-        	aux_aresta->prox->prox = NULL;
-    	}else {
- 			while(aux_aresta->prox != NULL) aux_aresta = aux_aresta->prox;
-        	aux_aresta->vdestino = y;
-        	aux_aresta->valor_aresta = -1;
-        	aux_aresta->prox = (Edge*)malloc(sizeof(Edge));
-        	aux_aresta->prox->prox = NULL;
-        }
-    }
-    /*else{
-    	if(aux->identificador != x) printf("O vertice %d nao pertence ao grafo!", x);
-    	else printf("O vertice %d nao pertence ao grafo!", y);
-    }*/
-    return G;
-}
-grafo* muda_valor_aresta(grafo *G,int x,int y,float v)
-{
-    
-    Edge* aux_aresta;
-    struct vertice* aux;
-    aux = G->v;
+	}while(opcao != 4);
 
-    while(aux->identificador != x && aux->prox != NULL) aux = aux->prox;
-    if(aux->identificador == x){
-        aux_aresta = aux->list;
-        while(aux_aresta->vdestino != y) aux_aresta = aux_aresta->prox;
-        if(aux_aresta->vdestino == y){
-        	aux_aresta->valor_aresta = v;
-        }else printf("Nao existe aresta de %d para %d", x,y);
-    }else{
-        printf("O vertice %d nao pertence ao grafo!", x);
-    }
-    return G;   
-}
-
-grafo* remove_aresta(grafo *G,int x,int y){
-    struct vertice *aux;
-    Edge *aux_aresta, *aux_aresta1;
-    aux = G->v;
-
-
-    while(aux->identificador != x && aux->prox != NULL) aux = aux->prox;
-    if(aux->identificador == x){
-    	if(aux->list != NULL){
-        	aux_aresta = aux->list;
-        	while((aux_aresta->vdestino != y) && (aux_aresta->prox != NULL)){
-        	    aux_aresta1 = aux_aresta;
-        	    aux_aresta = aux_aresta->prox;
-        	}
-        	if(aux_aresta->vdestino == y){
-        	    if(aux_aresta->prox != NULL){
-        	        aux_aresta1 = aux_aresta->prox;
-        	        free(aux_aresta);
-        	    }else free(aux_aresta);
-        	}
-    	}
-    }
-
-    return G;
-}
-
-float retorna_valor_aresta(grafo *G,int x,int y)
-{
-    float valor=-1;
-    Edge* aux_aresta;
-    struct vertice* aux;
-    aux = G->v;
-
-    while(aux->identificador != x && aux->prox != NULL) aux = aux->prox;
-    if(aux->identificador == x){
-        aux_aresta = aux->list;
-        while(aux_aresta->vdestino != y) aux_aresta = aux_aresta->prox;
-        if(aux_aresta->vdestino == y) valor = aux_aresta->valor_aresta;
-        else printf("Nao existe aresta de %d para %d", x,y);
-    }else{
-        printf("O vertice %d nao pertence ao grafo!", x);
-    }
-    return valor;
-}
-Edge* vizinhos(grafo* G, int x)
-{
-	
-	struct vertice *aux = G->v;
-	while(aux->identificador != x && aux->prox != NULL) aux = aux->prox;
-	if(aux->identificador == x){
-		return aux->list;	
-	}else{	
-		printf("O vertice x nao pertence ao grafo!");
-	} return NULL;
-
-}
-
-void Imprime_Lista(Edge *l, int x)
-{
-	if(l){
-		printf("Vizinhos de %d\n", x);
-		while(l != NULL){
-			printf("%d ", l->vdestino);
-			l = l->prox;
-		}
-	}else printf("O vertice %d nao possui vizinhos!\n", x);
-}
-
-bool adjacente(grafo *G, int x, int y){
-	
-	struct vertice *aux = G->v; //Variavel auxiliar para percorrer a lista de vetores
-	Edge *aux_aresta;
-	while((aux->identificador != x) && (aux->prox != NULL)) aux = aux->prox;
-	if(aux->identificador == x){
-		aux_aresta = aux->list;
-		while(aux_aresta->vdestino != y && aux_aresta->prox != NULL) aux_aresta = aux_aresta->prox;	
-		if(aux_aresta->vdestino == y) return true;
-		else return false;		
-	}else{
-		printf("O vertice x nao pertence ao grafo!");
-		return false;
-	} 
-	
+	return 0;
 }
