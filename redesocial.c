@@ -5,6 +5,8 @@ int main(int argc, char const *argv[])
 {
 	int opcao;
 	char *nome,*rede_social = "Facebook 2";
+	lista_cadastrada *itens;
+	tp_trans *trans;
 	grafo *G;
 	G = cria_grafo(rede_social);
 
@@ -14,7 +16,7 @@ int main(int argc, char const *argv[])
 		printf("1 - Interface do USUARIO\n");
 		printf("2 - Interface do ADMINISTRADOR\n");
 		printf("3 - Leitor e Escritor da rede social\n");
-		printf("4 - Sair\n");
+		printf("-1 - Sair\n");
 		scanf("%d", &opcao)
 
 		switch(opcao){
@@ -26,7 +28,7 @@ int main(int argc, char const *argv[])
 					printf("2 - Editar Pessoa\n");
 					printf("3 - Excluir Pessoa\n");
 					printf("4 - Trasacoes\n");
-					printf("5 - Sair\n");
+					printf("-1 - Sair\n");
 					scanf("%d", &opcao1);
 					switch(opcao1){
 						case 1:
@@ -46,13 +48,41 @@ int main(int argc, char const *argv[])
 							G = remove_vertice(G,nome); 
 							break;
 						
-						case 4: 
+						case 4:
+							printf("*********ITENS*********\n");
+							for(i=0;i<20;i++){
+								printf("%d - %s\n", i,itens->campos[i]);
+							}
+							scanf("%d", item);
+							printf("**********TRANSACOES**********\n");
+							for(i=0;i<4;i++){
+								printf("%d - %s\n", i,trans->campos[i]);
+							}
+							printf("-1 - Sair\n");
+							scanf("%d", tipo_transacao);
+							switch(tipo_transacao){
+								case 1:
+									printf("Digite o nome de usuario");
+									scanf("%s", nome);
+									G = adicionar_transacao(G,nome,itens->champos[item],trans->campos[tipo_transacao]);
+
+									break;
+								case 2:
+									break;
+								case 3:
+									break;
+								case 4:
+									break;
+
+								default:
+									break;
+							}
 							break;
 						
 						default:
 							break;
 					}
-				}while(opcao1 != 5);
+				}while(opcao1 != -1);
 				break;
 			
 			case 2:
@@ -62,7 +92,7 @@ int main(int argc, char const *argv[])
 					printf("1 - Exibir informacoes dos usuarios\n");
 					printf("2 - Exibir Trasacoes realizadas\n");
 					printf("3 - Editar Trasacoes\n");
-					printf("4 - Sair\n");
+					printf("-1 - Sair\n");
 	
 					switch(opcao1){
 						case 1:
@@ -85,7 +115,7 @@ int main(int argc, char const *argv[])
 						default:
 						break;
 					}
-				}while(opcao1 != 4);
+				}while(opcao1 != -1);
 
 				break;
 
@@ -111,13 +141,13 @@ int main(int argc, char const *argv[])
 						default:
 						break;
 					}
-				}while(opcao1 != 3);
+				}while(opcao1 != -1);
 
 				break;
 			default:
 				break;
 		}
-	}while(opcao != 4);
+	}while(opcao != -1);
 
 	return 0;
 }

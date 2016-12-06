@@ -3,6 +3,43 @@
 #include "grafo.h"
 #include <string.h>
 
+/* FUNÇÃO QUE PREENCHE O SIGNIFICADO DOS CAMPOS DO REGISTRO */
+lista_cadastrada* preenche_lista_itens(lista_cadastrada *lista)
+{
+	lista = (lista_cadastrada*)malloc(sizeof(lista_cadastrada));
+	lista->campos[0] = "Tenis";
+	lista->campos[1] = "Computador";
+	lista->campos[2] = "Carro";
+	lista->campos[3] = "Bicicleta";
+	lista->campos[4] = "Blu-ray";
+	lista->campos[5] = "Oculos";
+	lista->campos[6] = "Cadeira para churrasco";
+	lista->campos[7] = "Churrasqueira";
+	lista->campos[8] = "Terno";
+	lista->campos[9] = "Calca";
+	lista->campos[10] = "Livros";
+	lista->campos[11] = "Relogio";
+	lista->campos[12] = "Mecanico";
+	lista->campos[13] = "Jardinagem";
+	lista->campos[14] = "Limpeza de casa";
+	lista->campos[15] = "Encanamento";
+	lista->campos[16] = "Consertos";
+	lista->campos[17] = "Entregas";
+	lista->campos[18] = "Carona";
+	lista->campos[19] = "Aula";
+
+	return lista;
+}
+tp_trans* preenche_lista_transacoes(tp_trans *lista);
+{
+	lista = (tp_trans*)malloc(sizeof(tp_trans));
+	lista->campos[0] = "Comprar";
+	lista->campos[1] = "Vender";
+	lista->campos[2] = "Alugar";
+	lista->campos[3] = "Emprestar";
+
+	return lista;
+}
 grafo* cria_grafo(char* nome)
 {
     grafo* G = (grafo*) malloc(sizeof(struct grafo));
@@ -111,6 +148,7 @@ grafo* muda_valor_vertice(grafo *G,char *nome)
         printf("CEP atual: %s", aux->CEP);
         printf("Novo CEP:");
         scanf("%d", aux->CEP);
+        //FALTA ADICIONAR AS AMIZADES
     }else{
         printf("A pessoa %s nao existe na rede social\n", nome);
     }
@@ -262,4 +300,18 @@ bool adjacente(grafo *G, int x, int y){
 		return false;
 	} 
 	
+}
+grafo * adicionar_transacao(grafo *G, char *nome, char *item, char *trans)
+{
+	struct vertice *aux = G->v;
+	while((aux->nome != x) && (aux->prox != NULL)) aux = aux->prox;
+	if(aux->nome == x){
+		strcpy(aux->transacao->item,item);
+		strcpy(aux->transacao->tipo_transacao,trans);		
+		aux->transacao->situacao = 0;
+	} else {
+		printf("A pessoa %s nao existe na rede social!\n", nome);
+		return G;
+	}
+	return G;
 }
