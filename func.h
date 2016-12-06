@@ -16,6 +16,7 @@ struct edge {
     char* amigo; //vertice destino da aresta
     Edge *prox;
 };
+
 typedef struct Transacoes{
 	lista *solicitacoes;
 }transacoes;

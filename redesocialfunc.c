@@ -191,11 +191,11 @@ grafo* adiciona_vertice(grafo *G){
 
 	if(G->v == NULL){
     	G->v = (struct vertice*)malloc(sizeof(struct vertice));
-    	for(i=0;i<20;i++) G->v->interesses[i] = (char )malloc(200*sizeof(char))
+    	for(i=0;i<20;i++) G->v->interesses[i] = (char )malloc(200*sizeof(char));
     	G->v->list = (Edge *)malloc(sizeof(Edge));
         printf("****INSERIR DADOS DA PESSOA****\n");
         printf("Nome:");
-        scanf("%s", G->v->nome);
+        scanf("%[^\n]s", G->v->nome);
         printf("Sexo:");
         scanf("%s", G->v->genero);
         printf("Idade:");
@@ -222,6 +222,7 @@ grafo* adiciona_vertice(grafo *G){
     	struct vertice *aux = G->v;
     	while(aux->prox != NULL)aux = aux->prox;
     	aux->prox = (struct vertice*)malloc(sizeof(struct vertice));
+    	for(i=0;i<20;i++) aux->interesses[i] = (char )malloc(200*sizeof(char))
     	aux->prox->list = (Edge *)malloc(sizeof(Edge));
         printf("****INSERIR DADOS DA PESSOA****\n");
         printf("Nome:");
@@ -306,11 +307,11 @@ grafo* muda_valor_vertice(grafo *G,char *nome)
         		printf("3 - Adicionar\n");
         		printf("-1 - Sair\n");
         		scanf("%d", opcao1);
-        		if(((opcao < 1) || (opcao > 3)) && (opcao != -1)){
+        		if(((opcao1 < 1) || (opcao1 > 3)) && (opcao1 != -1)){
         			printf("Digite uma opcao valida!\n");
         			scanf("%d", opcao1);
         		}
-        		if(opcao1 == 1 || opcao1 == 2){
+        		if((opcao1 == 1) || (opcao1 == 2)){
         			printf("Interesses");
         			for(i=0;i<aux->num_interesse;i++) printf("%d - %s", i, aux->interesses[i]);
   					printf("Digite o interesse\n");
@@ -321,9 +322,15 @@ grafo* muda_valor_vertice(grafo *G,char *nome)
         				scanf("%s", aux1);
         				strcpy(aux->interesses[i], aux1);
         			} else {
-        				for(i=opcao1;i<=aux->num_interesses;i--) strcpy(aux->interesses[i],aux->interesses[i+1]);
+        				if(opcao2 == aux->num_interesses) {
+        					aux->interesses[num_interesses] = "NULO";
+        					aux->num_interesses--;
+        				}else {
+        				for(i=opcao2;i<aux->num_interesses-1;i--) strcpy(aux->interesses[i],aux->interesses[i+1]);
         				printf("Interesse excluido!");
+        				aux->interesses[num_interesses] = "NULO";
         				aux->num_interesses--;
+        				}
         			}
         		} else if(opcao1 == 3){
         			if(aux->num_interesses < 20){
@@ -341,6 +348,10 @@ grafo* muda_valor_vertice(grafo *G,char *nome)
         printf("1 - Sim\n");
         printf("2 - Nao\n");
         scanf("%d", opcao);
+        if((opcao != 1) && (opcao != 2)){
+        	printf("Digite uma opcao valida!\n");
+        	scanf("%d", opcao1);
+        }
         if(opcao == 1){
         	do{
         		printf("O que voce deseja fazer");
@@ -348,6 +359,7 @@ grafo* muda_valor_vertice(grafo *G,char *nome)
         		printf("2 - Excluir\n");
         		printf("-1 - Sair\n");
         		scanf("%d", opcao1);
+        		
         		switch(opcao1){
         			case 1:
         				printf("Digite o nome da pessoa:\n");
@@ -471,24 +483,22 @@ grafo* adiciona_aresta(grafo *G,char *x,char *y)
     
     while(aux->nome != x && aux->prox != NULL) aux = aux->prox;
     while(aux1->nome != y && aux1->prox != NULL) aux1 = aux1->prox;
-    if((aux->nome == x) && (aux1->nome == y)){
-    	aux_aresta = aux->list;
-    	if(aux_aresta->prox == NULL){
-    		aux_aresta->vdestino = y;
-        	aux_aresta->valor_aresta = -1;
-        	aux_aresta->prox = (Edge*)malloc(sizeof(Edge));
-        	aux_aresta->prox->prox = NULL;
-    	}else {
- 			while(aux_aresta->prox != NULL) aux_aresta = aux_aresta->prox;
-        	aux_aresta->vdestino = y;
-        	aux_aresta->valor_aresta = -1;
-        	aux_aresta->prox = (Edge*)malloc(sizeof(Edge));
-        	aux_aresta->prox->prox = NULL;
-        }
-    }
-    else{
-    	printf("O vertice %d nao pertence ao grafo!", y);
-    }
+    if(aux->nome == x){
+    	if(aux1->nome == y){
+    		aux_aresta = aux->list;
+    		if(aux_aresta->prox == NULL){
+    	    	aux_aresta->prox = (Edge*)malloc(sizeof(Edge));
+    	    	aux_aresta->amigo = y;
+    	    	aux_aresta->prox->prox = NULL;
+    		}else {
+ 				while(aux_aresta->prox != NULL) aux_aresta = aux_aresta->prox;
+    	    	aux_aresta->prox = (Edge*)malloc(sizeof(Edge));
+    	    	aux_aresta->amigo = y;
+    	    	aux_aresta->prox->prox = NULL;
+    	    }
+    	} else printf("%s nao pertence a rede social!", y);
+    } else printf("%s nao pertence a rede social!", x);
+
     return G;
 }
 /**********************************************************************************************
@@ -509,7 +519,7 @@ grafo* adiciona_aresta(grafo *G,char *x,char *y)
 *Assertivas de saída
 *
 **********************************************************************************************/
-grafo* remove_aresta(grafo *G,int x,int y){
+grafo* remove_aresta(grafo *G,char *x ,char* y){
     struct vertice *aux;
     Edge *aux_aresta, *aux_aresta1;
     aux = G->v;
@@ -519,56 +529,23 @@ grafo* remove_aresta(grafo *G,int x,int y){
     if(aux->nome == x){
     	if(aux->list != NULL){
         	aux_aresta = aux->list;
-        	while((aux_aresta->vdestino != y) && (aux_aresta->prox != NULL)){
+        	while((aux_aresta->destino != y) && (aux_aresta->prox != NULL)){
         	    aux_aresta1 = aux_aresta;
         	    aux_aresta = aux_aresta->prox;
         	}
-        	if(aux_aresta->vdestino == y){
+        	if(aux_aresta->amigo == y){
         	    if(aux_aresta->prox != NULL){
         	        aux_aresta1 = aux_aresta->prox;
         	        free(aux_aresta);
-        	    }else free(aux_aresta);
-        	}else printf("Essa pessoa nao esta na sua lista de amigos!\n");
+        	        printf("%s foi removido da sua lista de amizades\n")
+        	    } else free(aux_aresta);
+        	}else printf("%s nao esta na lista de amizades!\n", y);
     	}
+    } else {
+    	printf(" %s nao pertence a rede social!\n", x);
     }
 
     return G;
-}
-/**********************************************************************************************
-*Função: Retorna Valor Aresta
-*Descrição
-*	Função retorna o valor  da aresta que conecta x à y 
-*
-*Valor retornado
-*	Retorna o valor associado a aresta que parte de x para y
-*
-*Parâmetros
-*	G - ponteiro para o espaço onde o grafo está alocado 
-*	x - idenficador do vértice origem
-*	y - identificador do vértice destino
-*
-*Assertivas de entrada
-*
-*Assertivas de saída
-*
-**********************************************************************************************/
-float retorna_valor_aresta(grafo *G,int x,int y)
-{
-    float valor=-1;
-    Edge* aux_aresta;
-    struct vertice* aux;
-    aux = G->v;
-
-    while(aux->nome != x && aux->prox != NULL) aux = aux->prox;
-    if(aux->nome == x){
-        aux_aresta = aux->list;
-        while(aux_aresta->vdestino != y) aux_aresta = aux_aresta->prox;
-        if(aux_aresta->vdestino == y) valor = aux_aresta->valor_aresta;
-        else printf("Nao existe aresta de %d para %d", x,y);
-    }else{
-        printf("O vertice %d nao pertence ao grafo!", x);
-    }
-    return valor;
 }
 /**********************************************************************************************
 *Função: Vizinhos
@@ -587,7 +564,7 @@ float retorna_valor_aresta(grafo *G,int x,int y)
 *Assertivas de saída
 *
 **********************************************************************************************/
-Edge* vizinhos(grafo* G, int x)
+Edge* vizinhos(grafo* G, char  *x)
 {
 	
 	struct vertice *aux = G->v;
@@ -595,7 +572,7 @@ Edge* vizinhos(grafo* G, int x)
 	if(aux->nome == x){
 		return aux->list;	
 	}else{	
-		printf("O vertice x nao pertence ao grafo!");
+		printf("%s nao pertence a rede social!", x);
 	} return NULL;
 
 }
@@ -617,18 +594,18 @@ Edge* vizinhos(grafo* G, int x)
 *Assertivas de saída
 *	
 **********************************************************************************************/
-bool adjacente(grafo *G, int x, int y){
+bool adjacente(grafo *G, char *x, char *y){
 	
 	struct vertice *aux = G->v; //Variavel auxiliar para percorrer a lista de vetores
 	Edge *aux_aresta;
 	while((aux->nome != x) && (aux->prox != NULL)) aux = aux->prox;
 	if(aux->nome == x){
 		aux_aresta = aux->list;
-		while(aux_aresta->vdestino != y && aux_aresta->prox != NULL) aux_aresta = aux_aresta->prox;	
-		if(aux_aresta->vdestino == y)	return true;
+		while(aux_aresta->destino != y && aux_aresta->prox != NULL) aux_aresta = aux_aresta->prox;	
+		if(aux_aresta->destino == y)	return true;
 		else return false;	
 	}else{
-		printf("O vertice x nao pertence ao grafo!");
+		printf("%s nao pertence a rede social!", x);
 		return false;
 	} 
 	
@@ -636,7 +613,7 @@ bool adjacente(grafo *G, int x, int y){
 /**********************************************************************************************
 *Função: Adicionar Transação
 *Descrição
-*	Função adiciona transações ao histórico do usuário
+*	Função adiciona transações ao histórico do usuário e a lista de transações realizadas na rede
 *
 *Valor retornado
 *	Retorna o grafo atualizado
@@ -667,9 +644,6 @@ grafo *adicionar_transacao(grafo *G, char *nome, char *item, char *trans, lista 
 		strcpy(aux1->origem,nome);
 		strcpy(aux1->tipo_transacao,trans);		
 		aux1->transacao->situacao = 0;
-	} else {
-		printf("A pessoa %s nao existe na rede social!\n", nome);
-		return G;
-	}
+	} else printf("%s nao existe na rede social!\n", nome);
 	return G;
 }
