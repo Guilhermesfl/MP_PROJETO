@@ -8,13 +8,18 @@ struct Lista{
 	int situacao;
 	char *item;
 	char *tipo_transacao; // VENDA,COMPRA,ALUGUEL E OUTROS
+	char *origem;
+	char *destino;
 };
 
 struct edge {
     char* amigo; //vertice destino da aresta
-    float valor_aresta; //Vai indicar se duas pessoas são amigas ou não
     Edge *prox;
 };
+typedef struct Transacoes{
+	lista *solicitacoes;
+}transacoes;
+
 struct vertice {
     Edge *list; //ponteiro para lista de arestas
     char *nome;
@@ -22,8 +27,9 @@ struct vertice {
     char *idade;
     char *niv_educacional;
     int  *CEP;
-    char *interesses[200];
-    // falta adicionar transações e avaliações
+    char *interesses[20];
+    int  num_interesses;
+    // falta adicionar avaliações
     lista *transacao;
     struct vertice *prox;
 };

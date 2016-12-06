@@ -1,5 +1,5 @@
 #include <stdioh.>
-#include <strdlib.h>
+#include <stdlib.h>
 
 int main(int argc, char const *argv[])
 {
@@ -10,7 +10,7 @@ int main(int argc, char const *argv[])
 	grafo *G;
 	G = cria_grafo(rede_social);
 
-
+	//Adm do projeto: Guilherme Lopes
 	do{
 		printf("Digite a opcao a ser acessada:");
 		printf("1 - Interface do USUARIO\n");
@@ -32,53 +32,35 @@ int main(int argc, char const *argv[])
 					scanf("%d", &opcao1);
 					switch(opcao1){
 						case 1:
-							//FALTA ADICIONAR INTERESSES, TRASACOES E AVALIACOES
+							assert(G);
 							G = adiciona_vertice(grafo *G);
 							break;
 						
 						case 2: 
 							printf("Digite o nome da pessoa a ser editada:");
 							scanf("%s", nome);
+							assert(G);
 							G = muda_valor_vertice(G,nome);
 							break;
 						
 						case 3:
 							printf("Digite o nome da pessoa a ser excluida:");
 							scanf("%s", nome);
+							assert(G);
 							G = remove_vertice(G,nome); 
 							break;
-						
 						case 4:
+							printf("Digite o nome de usuario");
+							scanf("%s", nome);
 							printf("*********ITENS*********\n");
-							for(i=0;i<20;i++){
-								printf("%d - %s\n", i,itens->campos[i]);
-							}
+							for(i=0;i<20;i++) printf("%d - %s\n", i,itens->campos[i]);
 							scanf("%d", item);
 							printf("**********TRANSACOES**********\n");
-							for(i=0;i<4;i++){
-								printf("%d - %s\n", i,trans->campos[i]);
-							}
-							printf("-1 - Sair\n");
+							for(i=0;i<4;i++) printf("%d - %s\n", i,trans->campos[i]);
 							scanf("%d", tipo_transacao);
-							switch(tipo_transacao){
-								case 1:
-									printf("Digite o nome de usuario");
-									scanf("%s", nome);
-									G = adicionar_transacao(G,nome,itens->champos[item],trans->campos[tipo_transacao]);
-
-									break;
-								case 2:
-									break;
-								case 3:
-									break;
-								case 4:
-									break;
-
-								default:
-									break;
-							}
+							assert(G);
+							G = adicionar_transacao(G,nome,itens->campos[item],trans->campos[tipo_transacao],lista_geral_trans);
 							break;
-						
 						default:
 							break;
 					}
@@ -96,20 +78,12 @@ int main(int argc, char const *argv[])
 	
 					switch(opcao1){
 						case 1:
-							//FALTA ADICIONAR INTERESSES, TRASACOES E AVALIACOES
-							G = adiciona_vertice(grafo *G);
 							break;
 					
 						case 2: 
-							printf("Digite o nome da pessoa a ser editada:");
-							scanf("%s", nome);
-							G = muda_valor_vertice(G,nome);
 							break;
 						
 						case 3:
-							printf("Digite o nome da pessoa a ser excluida:");
-							scanf("%s", nome);
-							G = remove_vertice(G,nome); 
 							break;
 						
 						default:
