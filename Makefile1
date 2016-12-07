@@ -1,0 +1,2 @@
+teste_rs:teste_redesocial.c redesocialfunc.c
+	gcc -g -o teste_rs teste_redesocial.c redesocialfunc.c -I.
