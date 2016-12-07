@@ -68,4 +68,4 @@ grafo* adiciona_aresta(grafo *G,char *nome,char *nome1);
 grafo* remove_aresta(grafo *G,char *nome,char *nome1);
 float retorna_valor_vertice(grafo *G,char *nome);
 grafo* muda_valor_vertice(grafo *G,char *nome);
-void Imprime_Lista(Edge *l, char* x);
+void Imprime_Lista(struct vertice *l);

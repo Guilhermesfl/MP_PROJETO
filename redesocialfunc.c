@@ -612,9 +612,9 @@ grafo *adicionar_transacao(grafo *G, char *nome, char *item, char *trans, transa
  if(aux->nome == nome){
     aux2 = aux->transacao;
     while(aux2->prox != NULL) aux2 = aux2->prox;
-  if(strcpy(trans, "Compra")==0){
-   while(aux1->prox != NULL && strcpy(aux1->tipo_transacao,"Venda")==0 && aux1->item != item && aux1->idade >= min && aux1->idade <= max && aux1->situacao == 0) aux1=aux1->prox;
-   if(aux1->item == item && strcpy(aux1->tipo_transacao,"Venda")==0 && aux1->idade >= min && aux1->idade <= max && aux1->situacao == 0){
+  if(strcmp(trans, "Compra")==0){
+   while(aux1->prox != NULL && strcmp(aux1->tipo_transacao,"Venda")!=0 && aux1->item != item && aux1->idade >= min && aux1->idade <= max && aux1->situacao != 0) aux1=aux1->prox;
+   if(aux1->item == item && strcmp(aux1->tipo_transacao,"Venda")==0 && aux1->idade >= min && aux1->idade <= max && aux1->situacao == 0){
     strcpy(aux2->item,item);
     strcpy(aux2->origem,nome);
     strcpy(aux2->destino,aux1->origem);
@@ -632,10 +632,11 @@ grafo *adicionar_transacao(grafo *G, char *nome, char *item, char *trans, transa
     strcpy(aux1->origem,nome);
     strcpy(aux1->tipo_transacao,trans);  
     aux1->situacao = 0;   
+    
    }
   } else {
-   while(aux1->prox != NULL && strcpy(aux1->tipo_transacao,"Compra")==0 && aux1->item != item && aux1->idade >= min && aux1->idade <= max && aux1->situacao == 0) aux1=aux1->prox;
-   if(aux1->item == item && strcpy(aux1->tipo_transacao,"Compra")==0 && aux1->idade >= min && aux1->idade <= max && aux1->situacao == 0){
+   while(aux1->prox != NULL && strcmp(aux1->tipo_transacao,"Compra")!=0 && aux1->item != item && aux1->idade >= min && aux1->idade <= max && aux1->situacao != 0) aux1=aux1->prox;
+   if(aux1->item == item && strcmp(aux1->tipo_transacao,"Compra")==0 && aux1->idade >= min && aux1->idade <= max && aux1->situacao == 0){
     strcpy(aux2->item,item);
     strcpy(aux2->origem,nome);
     strcpy(aux2->destino,aux1->origem);
@@ -660,3 +661,40 @@ grafo *adicionar_transacao(grafo *G, char *nome, char *item, char *trans, transa
  return G;
 }
 
+/**********************************************************************************************
+*Função: Imprime Lista
+*Descrição
+* Imprime os itens contidos em uma lista
+*
+*Valor retornado
+* 
+*
+*Parâmetros
+* l - vertice a ser explorado
+* 
+* 
+*Assertivas de entrada
+* l != NULL
+*Assertivas de saída
+* 
+**********************************************************************************************/
+void Imprime_Lista(struct vertice *l)
+{
+    struct vertice* l2 = l;
+    printf("Nome: %s\n",l->nome);
+    printf("Sexo: %s\n",l->genero);
+    printf("Idade: %d\n",l->idade);
+    printf("Nivel Educacional: %s\n",l->niv_educacional);
+    printf("CEP: %d\n",l->CEP);
+
+  if(l){
+    printf("Sao amigos de %s", l->nome);
+    while(l2->list->prox!=NULL){
+        printf("%s, ", l2->list->amigo);
+        l2 = l2->prox;
+        if(l2->prox == NULL) break;
+    }
+
+  }
+  else printf("A rede social nao possui amigos!\n");
+}
